@@ -1,6 +1,14 @@
 const express = require('express');
+const bodyParser = require('body-parser');
+
 const app = express();
-const port = 3001;
+const port = 3000;
+
+// Middleware to parse JSON request bodies
+app.use(bodyParser.json());
+
+// In-memory guestbook storage
+const guestbook = [];
 
 // Function to get the current time components
 function getCurrentTime() {
@@ -17,10 +25,29 @@ function getCurrentTime() {
     };
 }
 
-// API endpoint to get the current time
+// Endpoint to get the current time
 app.get('/current-time', (req, res) => {
     const currentTime = getCurrentTime();
     res.json(currentTime);
+});
+
+// Endpoint to add a message to the guestbook
+app.post('/guestbook', (req, res) => {
+    const { message } = req.body;
+
+    if (!message || typeof message !== 'string') {
+        return res.status(400).json({ error: 'Message is required and must be a string.' });
+    }
+
+    const timestamp = getCurrentTime();
+    guestbook.push({ message, timestamp });
+
+    res.status(201).json({ success: true, message: 'Message added to guestbook.' });
+});
+
+// Endpoint to retrieve all messages from the guestbook
+app.get('/guestbook', (req, res) => {
+    res.json(guestbook);
 });
 
 // Start the server
