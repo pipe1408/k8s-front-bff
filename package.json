@@ -1,0 +1,20 @@
+{
+  "name": "k8s-front-bff",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "scripts": {
+    "start": "concurrently \"npm run start -w frontend\" \"npm run start -w backend\""
+  },
+  "devDependencies": {
+    "concurrently": "^7.6.0"
+  },
+  "dependencies": {
+    "body-parser": "^1.20.3",
+    "cors": "^2.8.5",
+    "depd": "^2.0.0",
+    "express": "^4.21.1"
+  }
+}

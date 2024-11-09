@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: k8s-front-bff
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: k8s-front-bff
+  template:
+    metadata:
+      labels:
+        app: k8s-front-bff
+    spec:
+      containers:
+        - name: k8s-front-bff
+          image: pipeba1408/k8s-front-bff:v2
+          ports:
+            - containerPort: 3000
+            - containerPort: 3001
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            initialDelaySeconds: 10
+            periodSeconds: 10
